@@ -1,0 +1,42 @@
+[package]
+name = "mcp3424"
+version = "0.1.0"
+description = "Async Rust driver for the MCP3422/3/4 ADC."
+authors = ["Elmar Schug <elmar.schug@jayware.org>"]
+readme = "README.md"
+repository = "https://github.com/kKdH/mcp3424-rs"
+documentation = "https://docs.rs/mcp3424"
+keywords = ["mcp3424", "driver", "adc", "async", "embedded"]
+categories = ["embedded", "no-std", "no-std::no-alloc", "asynchronous"]
+edition = "2021"
+rust-version = "1.76"
+license = "Apache-2.0"
+
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE",
+]
+
+[package.metadata.docs.rs]
+all-features = true
+
+[features]
+default = ["fmt"]
+defmt = ["dep:defmt"]
+fmt = []
+stream = ["dep:futures"]
+uom = ["dep:uom"]
+
+[dependencies]
+defmt = { version = "0.3.*", optional = true, default-features = false }
+embedded-hal-async = { version = "1.*" }
+futures = { version = "0.3.*", optional = true, default-features = false }
+uom = { version = "0.36.*", optional = true, default-features = false, features = [ "f32", "si"] }
+
+[dev-dependencies]
+async-std = { version = "1.12.*", features = ["attributes"] }
+embedded-hal-mock = { version = "0.11.*", features = ["eh1", "embedded-hal-async"] }
+googletest = { version = "0.11.*" }
+rstest = { version = "0.21.*" }
