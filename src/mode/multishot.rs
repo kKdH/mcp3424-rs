@@ -12,7 +12,7 @@ use crate::mode::oneshot;
 /// the device enters a low current standby mode after the last conversion automatically.
 ///
 /// <div class="warning">
-/// <b>Important:</b>
+/// <b>Important</b>
 ///
 /// This mode <b>is not</b> a device feature and is completely implemented within software by triggering
 /// multiple one-shot conversions sequentially. Therefor the returned results <b>do not</b> represent

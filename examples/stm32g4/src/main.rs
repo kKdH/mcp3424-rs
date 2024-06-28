@@ -105,7 +105,6 @@ async fn measure(mut adc: Adc) {
 
     info!("Starting measuring task.");
 
-    #[allow(non_snake_case)]
     let fmt_voltage = ElectricPotential::format_args(millivolt, Abbreviation);
 
     let mut values = Box::pin(unwrap!(adc.measure_stream().await))
