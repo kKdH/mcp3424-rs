@@ -29,7 +29,15 @@ jobs:
           key: rust-toolchain-${{ github.job }}
       - name: Prepare Rust Dependency Cache
         uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 #2.7.3
-      - name: Compile
-        run: cargo build --all-features
-      - name: Test
+      - name: "Test: features=[]"
+        run: cargo test --no-default-features
+      - name: "Test: features=[stream]"
+        run: cargo test --features=stream
+      - name: "Test: features=[uom]"
+        run: cargo test --features=uom
+      - name: "Test: features=[stream,uom]"
+        run: cargo test --features=stream,uom
+      - name: "Test: features=[default]"
+        run: cargo test
+      - name: "Test: features=[*]"
         run: cargo test --all-features

@@ -1,5 +1,5 @@
 /// Error type used by the driver.
-#[cfg_attr(feature = "fmt", derive(Debug))]
+#[cfg_attr(any(feature = "fmt", test, doc, doctest), derive(Debug))]
 pub enum Error<BusError>
 where
     BusError: embedded_hal_async::i2c::Error
@@ -26,7 +26,7 @@ where
     }
 }
 
-#[cfg(feature = "fmt")]
+#[cfg(any(feature = "fmt", test))]
 impl <BusError> core::fmt::Display for Error<BusError>
 where
     BusError: embedded_hal_async::i2c::Error + core::fmt::Display

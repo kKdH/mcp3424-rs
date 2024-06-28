@@ -12,7 +12,7 @@ use crate::{Channel, Gain, Resolution};
 /// [`ConversionTime`] can be adjusted.
 ///
 #[derive(Clone)]
-#[cfg_attr(feature = "fmt", derive(Debug))]
+#[cfg_attr(any(feature = "fmt", test), derive(Debug))]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Configuration {
     pub channel: Channel,
@@ -74,7 +74,7 @@ impl Default for Configuration {
 /// [`Configuration`], [`Channel`], [`Gain`], [`Resolution`]
 ///
 #[derive(Copy, Clone)]
-#[cfg_attr(feature = "fmt", derive(Debug))]
+#[cfg_attr(any(feature = "fmt", test), derive(Debug))]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ConversionTime {
     /// Sets conversion time in µs to the specified value.

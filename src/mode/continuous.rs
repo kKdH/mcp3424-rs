@@ -16,7 +16,7 @@ use crate::cfg::Cfg;
 ///# use embedded_hal_mock::eh1::i2c::Mock as I2C;
 ///# use embedded_hal_mock::eh1::i2c::Transaction;
 ///# use embedded_hal_mock::eh1::delay::NoopDelay as Delay;
-/// use mcp3424::{MCP3424, Configuration, ContinuousMode, Channel};
+/// use mcp3424::{MCP3424, Configuration, ContinuousMode, Channel, Error};
 ///
 ///# let mut i2c = I2C::new(&[
 ///#     Transaction::write(0x68, vec![0b00010000]),
@@ -26,9 +26,10 @@ use crate::cfg::Cfg;
 ///#
 /// let mut adc = MCP3424::new(i2c, 0x68, Delay, ContinuousMode::new(&Configuration::default()));
 ///
-///# async_std::task::block_on(async {
-/// println!("First value: {:?}", adc.measure().await.unwrap());
-/// println!("Second value: {:?}", adc.measure().await.unwrap());
+///# let _: Result<(), Error<_>> = async_std::task::block_on(async {
+/// println!("First value: {:?}", adc.measure().await?);
+/// println!("Second value: {:?}", adc.measure().await?);
+///# Ok(())
 ///# });
 ///# adc.into_inner().0.done();
 /// ```

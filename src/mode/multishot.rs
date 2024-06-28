@@ -47,7 +47,7 @@ use crate::mode::oneshot;
 ///         println!("Measured value of channel 3: {:?}", value[0]);
 ///         println!("Measured value of channel 4: {:?}", value[1]);
 ///     }
-///     Err(cause) => println!("Failed to measure, due to error: {}", cause)
+///     Err(_) => println!("Failed to measure")
 /// }
 ///# });
 ///# adc.into_inner().0.done();

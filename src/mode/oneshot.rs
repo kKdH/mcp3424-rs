@@ -29,7 +29,7 @@ use crate::mode::oneshot;
 ///# async_std::task::block_on(async {
 /// match adc.measure().await {
 ///     Ok(value) => println!("Measured value: {:?}", value),
-///     Err(cause) => println!("Failed to measure, due to error: {}", cause)
+///     Err(_) => println!("Failed to measure")
 /// }
 ///# });
 ///# adc.into_inner().0.done();

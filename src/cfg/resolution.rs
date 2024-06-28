@@ -11,7 +11,7 @@
 /// [`ConversionTime`]: crate::ConversionTime
 ///
 #[derive(Copy, Clone)]
-#[cfg_attr(feature = "fmt", derive(Debug))]
+#[cfg_attr(any(feature = "fmt", test), derive(Debug))]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Resolution {
     /// A resolution of 12 bits results in a sampling rate of 240 samples per second.

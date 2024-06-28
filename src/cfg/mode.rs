@@ -1,6 +1,6 @@
 
 #[derive(Copy, Clone)]
-#[cfg_attr(feature = "fmt", derive(Debug))]
+#[cfg_attr(any(feature = "fmt", test), derive(Debug))]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Mode {
     Continuous,
