@@ -1,3 +1,5 @@
+//! This module delivers supplementary documentation.
+
 #[cfg(feature = "uom")]
 pub mod uom {
 //! # UOM
