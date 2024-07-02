@@ -4,7 +4,7 @@
 
 # MCP3424
 
-This crate provides an async Rust driver for the MCP342[2/3/4] ADC, based on the embedded-hal traits.
+This crate provides an async Rust driver for the MCP342[2/3/4] ADC, based on the [embedded-hal](https://github.com/rust-embedded/embedded-hal) traits.
 
 The [MCP3422](https://www.microchip.com/en-us/product/mcp3422), [MCP3423](https://www.microchip.com/en-us/product/mcp3423) and [MCP3424](https://www.microchip.com/en-us/product/mcp3424) are low-noise, high accuracy delta-sigma A/D converter with differential inputs, on-board precision 2.048V reference voltage and up to 18 bits of resolution. The devices offer a two-wire I2C compatible serial interface.
 
