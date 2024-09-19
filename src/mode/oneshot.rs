@@ -181,10 +181,10 @@ mod tests {
         let mut testee = MCP3424::new(i2c, 0x68, NoopDelay, OneShotMode::new(&Configuration::default()));
 
         #[cfg(feature = "uom")]
-        assert_that!(testee.measure().await, ok(eq(ElectricPotential::new::<millivolt>(1.0))));
+        assert_that!(&testee.measure().await, ok(eq(&ElectricPotential::new::<millivolt>(1.0))));
 
         #[cfg(not(feature = "uom"))]
-        assert_that!(testee.measure().await, ok(eq(1.0)));
+        assert_that!(&testee.measure().await, ok(eq(&1.0)));
 
         testee.i2c.done();
 

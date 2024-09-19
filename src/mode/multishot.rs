@@ -171,10 +171,12 @@ fn cfgs_and_delays<const N: usize>(configurations: &[Configuration]) -> ([Cfg; N
 #[cfg(test)]
 #[allow(non_snake_case)]
 mod tests {
+    use alloc::vec;
     use embedded_hal_mock::eh1::delay::NoopDelay;
     use embedded_hal_mock::eh1::i2c::{Mock as I2c, Transaction};
     use googletest::prelude::*;
     use rstest::{fixture, rstest};
+
     #[cfg(feature = "uom")]
     use uom::si::electric_potential::millivolt;
     #[cfg(feature = "uom")]
@@ -232,10 +234,10 @@ mod tests {
         let result = testee.measure().await;
 
         #[cfg(feature = "uom")]
-        assert_that!(result, ok(eq([ElectricPotential::new::<millivolt>(1.0), ElectricPotential::new::<millivolt>(0.125)])));
+        assert_that!(&result, ok(eq(&[ElectricPotential::new::<millivolt>(1.0), ElectricPotential::new::<millivolt>(0.125)])));
 
         #[cfg(not(feature = "uom"))]
-        assert_that!(result, ok(eq([1.0, 0.125])));
+        assert_that!(&result, ok(eq(&[1.0, 0.125])));
 
         testee.i2c.done();
 

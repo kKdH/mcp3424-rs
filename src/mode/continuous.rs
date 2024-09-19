@@ -194,16 +194,16 @@ mod tests {
 
         #[cfg(feature = "uom")]
         {
-            assert_that!(testee.measure().await, ok(eq(ElectricPotential::new::<millivolt>(1.0))));
-            assert_that!(testee.measure().await, ok(eq(ElectricPotential::new::<millivolt>(2.0))));
-            assert_that!(testee.measure().await, ok(eq(ElectricPotential::new::<millivolt>(3.0))));
+            assert_that!(testee.measure().await, ok(eq(&ElectricPotential::new::<millivolt>(1.0))));
+            assert_that!(testee.measure().await, ok(eq(&ElectricPotential::new::<millivolt>(2.0))));
+            assert_that!(testee.measure().await, ok(eq(&ElectricPotential::new::<millivolt>(3.0))));
         }
 
         #[cfg(not(feature = "uom"))]
         {
-            assert_that!(testee.measure().await, ok(eq(1.0)));
-            assert_that!(testee.measure().await, ok(eq(2.0)));
-            assert_that!(testee.measure().await, ok(eq(3.0)));
+            assert_that!(&testee.measure().await, ok(eq(&1.0)));
+            assert_that!(&testee.measure().await, ok(eq(&2.0)));
+            assert_that!(&testee.measure().await, ok(eq(&3.0)));
         }
 
         testee.i2c.done();
