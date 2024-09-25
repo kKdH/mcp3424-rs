@@ -84,7 +84,7 @@ where
     /// Updates the driver's configuration. The configuration is applied to the device lazily on
     /// the next measure call.
     pub fn configure(&mut self, configurations: &[Configuration]) {
-        let (cfgs, delays) = cfgs_and_delays(&configurations);
+        let (cfgs, delays) = cfgs_and_delays(configurations);
         self.mode.cfgs = cfgs;
         self.mode.delays = delays;
     }
@@ -138,7 +138,7 @@ where
             self.write(&[self.mode.cfgs[i].as_byte()]).await?;
             self.delay.delay_us(self.mode.delays[i]).await;
             self.read(buffer).await?;
-            values[i] = Self::convert(&buffer)?;
+            values[i] = Self::convert(buffer)?;
         }
 
         Ok(values)

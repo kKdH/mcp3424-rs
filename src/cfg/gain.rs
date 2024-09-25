@@ -10,10 +10,11 @@
 /// [`Resolution`]: crate::Resolution
 /// [`ConversionTime`]: crate::ConversionTime
 ///
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[cfg_attr(any(feature = "fmt", test), derive(Debug))]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Gain {
+    #[default]
     X1,
     X2,
     X4,
@@ -23,7 +24,7 @@ pub enum Gain {
 impl Gain {
 
     pub const fn multiplier(&self) -> i32 {
-        return match self {
+        match self {
             Gain::X1 => 1,
             Gain::X2 => 2,
             Gain::X4 => 4,
@@ -38,11 +39,5 @@ impl Gain {
             Gain::X4 => 0b10,
             Gain::X8 => 0b11,
         }
-    }
-}
-
-impl Default for Gain {
-    fn default() -> Self {
-        Gain::X1
     }
 }

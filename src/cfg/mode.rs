@@ -1,8 +1,9 @@
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[cfg_attr(any(feature = "fmt", test), derive(Debug))]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Mode {
+    #[default]
     Continuous,
     OneShot,
 }
@@ -13,11 +14,5 @@ impl Mode {
             Mode::Continuous => 1,
             Mode::OneShot => 0,
         }
-    }
-}
-
-impl Default for Mode {
-    fn default() -> Self {
-        Mode::Continuous
     }
 }

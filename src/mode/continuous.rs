@@ -47,7 +47,7 @@ impl ContinuousMode {
 
     pub fn new(configuration: &Configuration) -> Self {
         Self {
-            cfg: cfg(&configuration, Cfg::default()),
+            cfg: cfg(configuration, Cfg::default()),
             delay: configuration.conversion_time_us(),
             initialized: false,
         }
@@ -120,7 +120,9 @@ where
 
         self.read(&mut buffer).await?;
 
-        Ok(Self::convert(&buffer)?)
+        let value = Self::convert(&buffer)?;
+
+        Ok(value)
     }
 
     #[cfg(feature = "stream")]
@@ -142,7 +144,7 @@ where
 }
 
 pub(crate) fn cfg(configuration: &Configuration, mut cfg: Cfg) -> Cfg {
-    cfg.set_values_from_configuration(&configuration);
+    cfg.set_values_from_configuration(configuration);
     cfg.mode = cfg::Mode::Continuous;
     cfg
 }

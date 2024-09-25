@@ -84,7 +84,7 @@ where
     Error<BusError>: From<<I2c as embedded_hal_async::i2c::ErrorType>::Error>,
     Mode: mode::Mode
 {
-    const REFERENCE_VOLTAGE: i64 = 2048_000_000;
+    const REFERENCE_VOLTAGE: i64 = 2_048_000_000;
     const REFERENCE_VOLTAGE_X2: i64 = Self::REFERENCE_VOLTAGE * 2;
 
     pub fn new(i2c: I2c, address: SevenBitAddress, delay: Delay, mode: Mode) -> Self {
@@ -93,7 +93,7 @@ where
             address,
             delay,
             mode,
-            _phantom: PhantomData::default(),
+            _phantom: PhantomData,
         }
     }
 

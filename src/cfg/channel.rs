@@ -10,10 +10,11 @@
 /// [`Resolution`]: crate::Resolution
 /// [`ConversionTime`]: crate::ConversionTime
 ///
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[cfg_attr(any(feature = "fmt", test), derive(Debug))]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Channel {
+    #[default]
     Channel1,
     Channel2,
     Channel3,
@@ -29,11 +30,5 @@ impl Channel {
             Channel::Channel3 => 0b10,
             Channel::Channel4 => 0b11,
         }
-    }
-}
-
-impl Default for Channel {
-    fn default() -> Self {
-        Channel::Channel1
     }
 }

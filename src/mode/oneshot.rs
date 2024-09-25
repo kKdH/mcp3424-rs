@@ -46,7 +46,7 @@ impl OneShotMode {
 
     pub fn new(configuration: &Configuration) -> Self {
         Self {
-            cfg: oneshot::cfg(&configuration, Cfg::default()),
+            cfg: oneshot::cfg(configuration, Cfg::default()),
             delay: configuration.conversion_time_us(),
         }
     }
@@ -115,7 +115,9 @@ where
 
         self.read(buffer).await?;
 
-        Ok(Self::convert(&buffer)?)
+        let value = Self::convert(buffer)?;
+
+        Ok(value)
     }
 
     #[cfg(feature = "stream")]
@@ -131,7 +133,7 @@ where
 }
 
 pub(crate) fn cfg(configuration: &Configuration, mut cfg: Cfg) -> Cfg {
-    cfg.set_values_from_configuration(&configuration);
+    cfg.set_values_from_configuration(configuration);
     cfg.ready = false;
     cfg.mode = cfg::Mode::OneShot;
     cfg

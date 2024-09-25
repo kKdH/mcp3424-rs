@@ -10,11 +10,12 @@
 /// [`Gain`]: crate::Gain
 /// [`ConversionTime`]: crate::ConversionTime
 ///
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[cfg_attr(any(feature = "fmt", test), derive(Debug))]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Resolution {
     /// A resolution of 12 bits results in a sampling rate of 240 samples per second.
+    #[default]
     TwelveBits,
     /// A resolution of 14 bits results in a sampling rate of 60 samples per second.
     FourteenBits,
@@ -101,11 +102,5 @@ impl Resolution {
             Resolution::SixteenBits =>  66667, // 15 SPS
             Resolution::EighteenBits => 266667 // 3.75 SPS
         }
-    }
-}
-
-impl Default for Resolution {
-    fn default() -> Self {
-        Resolution::TwelveBits
     }
 }
