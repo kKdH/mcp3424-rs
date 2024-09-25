@@ -9,6 +9,15 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+-*
 jobs:
   test:
+    strategy:
+      matrix:
+        features:
+          - ""
+          - "--all-features"
+          - "--features=stream"
+          - "--features=stream,uom"
+          - "--features=uom"
+          - "--no-default-features"
     name: Test and Verify
     runs-on: ubuntu-latest
     steps:
@@ -29,15 +38,5 @@ jobs:
           key: rust-toolchain-${{ github.job }}
       - name: Prepare Rust Dependency Cache
         uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 #2.7.3
-      - name: "Test: features=[]"
-        run: cargo test --no-default-features
-      - name: "Test: features=[stream]"
-        run: cargo test --features=stream
-      - name: "Test: features=[uom]"
-        run: cargo test --features=uom
-      - name: "Test: features=[stream,uom]"
-        run: cargo test --features=stream,uom
-      - name: "Test: features=[default]"
-        run: cargo test
-      - name: "Test: features=[*]"
-        run: cargo test --all-features
+      - name: "Test"
+        run: cargo test ${{ matrix.features }}
