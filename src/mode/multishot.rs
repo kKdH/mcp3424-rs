@@ -1,6 +1,3 @@
-#[cfg(feature = "stream")]
-use futures::{Stream, StreamExt};
-
 use crate::{Configuration, Error, MCP3424, Mode};
 use crate::cfg::Cfg;
 use crate::mode::oneshot;
@@ -114,7 +111,7 @@ where
     /// each time the stream gets polled.
     ///
     #[cfg(all(feature = "stream", not(feature = "uom")))]
-    pub async fn measure_stream<'a>(&'a mut self) -> Result<impl Stream<Item=Result<[f32; N], Error<BusError>>> + 'a, Error<BusError>> {
+    pub async fn measure_stream<'a>(&'a mut self) -> Result<impl futures::Stream<Item=Result<[f32; N], Error<BusError>>> + 'a, Error<BusError>> {
         self.do_measure_stream().await
     }
 
@@ -124,7 +121,8 @@ where
     /// each time the stream gets polled.
     ///
     #[cfg(all(feature = "stream", feature = "uom"))]
-    pub async fn measure_stream<'a>(&'a mut self) -> Result<impl Stream<Item=Result<[uom::si::f32::ElectricPotential; N], Error<BusError>>> + 'a, Error<BusError>> {
+    pub async fn measure_stream<'a>(&'a mut self) -> Result<impl futures::Stream<Item=Result<[uom::si::f32::ElectricPotential; N], Error<BusError>>> + 'a, Error<BusError>> {
+        use futures::StreamExt;
         self.do_measure_stream().await
             .map(|stream| stream
                 .map(|result| result
@@ -147,7 +145,7 @@ where
     }
 
     #[cfg(feature = "stream")]
-    async fn do_measure_stream<'a>(&'a mut self) -> Result<impl Stream<Item=Result<[f32; N], Error<BusError>>> + 'a, Error<BusError>> {
+    async fn do_measure_stream<'a>(&'a mut self) -> Result<impl futures::Stream<Item=Result<[f32; N], Error<BusError>>> + 'a, Error<BusError>> {
 
         let buffer = [0_u8; 4];
 
