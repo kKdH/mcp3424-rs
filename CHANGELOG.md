@@ -9,6 +9,14 @@
 ## Fixed
 -->
 
+# v0.3.0 — (tbd.)
+
+## Added
+* Implementation of `core::error::Error` trait for this crate's `Error` trait.
+
+## Changed
+* MSRV raised from 1.76 to 1.81.
+
 # v0.2.0 — 2024-07-02
 Just some improvements to the README and documentation.
 
