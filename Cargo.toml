@@ -18,6 +18,7 @@ include = [
     "README.md",
     "CHANGELOG.md",
     "LICENSE",
+    "rust-toolchain.toml",
 ]
 
 [package.metadata.docs.rs]
