@@ -9,7 +9,7 @@ documentation = "https://docs.rs/mcp3424"
 keywords = ["mcp3424", "driver", "adc", "async", "embedded"]
 categories = ["embedded", "no-std", "asynchronous"]
 edition = "2021"
-rust-version = "1.76"
+rust-version = "1.81"
 license = "Apache-2.0"
 
 include = [
@@ -40,4 +40,4 @@ uom = { version = "0.36.*", optional = true, default-features = false, features 
 async-std = { version = "1.13.*", features = ["attributes"] }
 embedded-hal-mock = { version = "0.11.*", features = ["eh1", "embedded-hal-async"] }
 googletest = { version = "0.12.*" }
-rstest = { version = "0.22.*" }
+rstest = { version = "0.23.*" }

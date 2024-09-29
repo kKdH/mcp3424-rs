@@ -4,7 +4,6 @@
 extern crate alloc;
 
 use alloc::boxed::Box;
-
 use defmt::{error, info, unwrap};
 use embassy_executor::Spawner;
 use embassy_stm32::{bind_interrupts, Config, i2c};
@@ -29,9 +28,9 @@ use defmt_rtt as _;
 use panic_probe as _;
 
 #[global_allocator]
-pub static HEAP: embedded_alloc::Heap = embedded_alloc::Heap::empty();
+pub static HEAP: embedded_alloc::LlffHeap = embedded_alloc::LlffHeap::empty();
 
-type Adc = MCP3424<I2c<'static, peripherals::I2C1, Async>, Error, Delay, MultiShotMode<4>>;
+type Adc = MCP3424<I2c<'static, Async>, Error, Delay, MultiShotMode<4>>;
 
 bind_interrupts!(struct Irqs {
     I2C1_EV => i2c::EventInterruptHandler<peripherals::I2C1>;
@@ -56,16 +55,21 @@ async fn main(spawner: Spawner) {
 
     info!("Configuring I2C.");
 
-    let i2c = I2c::new(
-        peripherals.I2C1,
-        peripherals.PA15,
-        peripherals.PB7,
-        Irqs,
-        peripherals.DMA1_CH6,
-        peripherals.DMA1_CH1,
-        Hertz(100_000),
-        Default::default(),
-    );
+    let i2c = {
+        let mut config = i2c::Config::default();
+        config.scl_pullup = true;
+        config.sda_pullup = true;
+        I2c::new(
+            peripherals.I2C1,
+            peripherals.PA15,
+            peripherals.PB7,
+            Irqs,
+            peripherals.DMA1_CH6,
+            peripherals.DMA1_CH1,
+            Hertz(400_000),
+            config,
+        )
+    };
 
     info!("Configured I2C.");
 

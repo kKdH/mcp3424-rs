@@ -1,5 +1,5 @@
 /// Error type used by the driver.
-#[cfg_attr(any(feature = "fmt", test, doc, doctest), derive(Debug))]
+#[derive(Debug)]
 pub enum Error<BusError>
 where
     BusError: embedded_hal_async::i2c::Error
@@ -10,6 +10,13 @@ where
     IllegalValue { value: i32, min: i32, max: i32},
     /// Indicates that the device's output buffer does not contain new data.
     NotReady,
+}
+
+impl <BusError> core::error::Error for Error<BusError>
+where
+    BusError: embedded_hal_async::i2c::Error + core::fmt::Display
+{
+    
 }
 
 #[cfg(feature = "defmt")]
@@ -26,7 +33,6 @@ where
     }
 }
 
-#[cfg(any(feature = "fmt", test))]
 impl <BusError> core::fmt::Display for Error<BusError>
 where
     BusError: embedded_hal_async::i2c::Error + core::fmt::Display
