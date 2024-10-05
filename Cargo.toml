@@ -1,6 +1,6 @@
 [package]
 name = "mcp3424"
-version = "0.2.0"
+version = "0.3.0"
 description = "Async Rust driver for the MCP3422/3/4 ADC."
 authors = ["Elmar Schug <elmar.schug@jayware.org>"]
 readme = "README.md"
