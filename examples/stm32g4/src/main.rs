@@ -3,7 +3,7 @@
 
 extern crate alloc;
 
-use alloc::boxed::Box;
+use core::pin::pin;
 use defmt::{error, info, unwrap};
 use embassy_executor::Spawner;
 use embassy_stm32::{bind_interrupts, Config, i2c};
@@ -111,12 +111,12 @@ async fn measure(mut adc: Adc) {
 
     let fmt_voltage = ElectricPotential::format_args(millivolt, Abbreviation);
 
-    let mut values = Box::pin(unwrap!(adc.measure_stream().await))
+    let mut values = pin!(unwrap!(adc.measure_stream().await)
         .map(|result| result
             .map(|values| values
                 .map(|value| fmt_voltage.with(value).to_string()).join(", ")
             )
-        );
+        ));
 
     loop {
         while let Some(values) = values.next().await {
