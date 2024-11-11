@@ -9,7 +9,9 @@
 ## Fixed
 -->
 
-# v0.3.0 — (tbd.)
+# v0.4.0 — (tbd.)
+
+# v0.3.0 — 2024-11-11
 
 ## Added
 * Implementation of `core::error::Error` trait for this crate's `Error` trait.
