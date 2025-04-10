@@ -1,4 +1,4 @@
 [toolchain]
 channel = "1.81"
-components = ["rustc", "rust-std"]
+components = ["rustc", "rust-src", "clippy"]
 targets = [ "thumbv7em-none-eabi" ]
