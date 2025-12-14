@@ -1,5 +1,5 @@
-use crate::{cfg, Configuration, Error, MCP3424, Mode};
 use crate::cfg::Cfg;
+use crate::{cfg, Configuration, Error, Mode, MCP3424};
 
 /// A mode where the device continuously converts data.
 ///
@@ -23,7 +23,7 @@ use crate::cfg::Cfg;
 ///#
 /// let mut adc = MCP3424::new(i2c, 0x68, Delay, ContinuousMode::new(&Configuration::default()));
 ///
-///# let _: Result<(), Error<_>> = async_std::task::block_on(async {
+///# let _: Result<(), Error<_>> = smol::block_on(async {
 /// println!("First value: {:?}", adc.measure().await?);
 /// println!("Second value: {:?}", adc.measure().await?);
 ///# Ok(())
@@ -155,14 +155,17 @@ mod tests {
     use embedded_hal_mock::eh1::delay::NoopDelay;
     use embedded_hal_mock::eh1::i2c::{Mock as I2c, Transaction};
     use googletest::prelude::*;
+    use macro_rules_attribute::apply;
     use rstest::{fixture, rstest};
+    use smol_macros::test;
+
     #[cfg(feature = "uom")]
     use uom::si::electric_potential::millivolt;
     #[cfg(feature = "uom")]
     use uom::si::f32::ElectricPotential;
 
-    use crate::{Channel, Configuration, ContinuousMode, Gain, MCP3424, Resolution};
     use crate::cfg::{Cfg, Mode};
+    use crate::{Channel, Configuration, ContinuousMode, Gain, Resolution, MCP3424};
 
     #[fixture]
     fn expected_cfg() -> Cfg {
@@ -176,6 +179,7 @@ mod tests {
     }
 
     #[rstest]
+    #[test_attr(apply(test))]
     async fn When_in_ContinuousMode_a_MCP3424_should_trigger_conversion(expected_cfg: Cfg) -> Result<()> {
 
         let returned_cfg = Cfg {

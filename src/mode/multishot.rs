@@ -1,6 +1,6 @@
-use crate::{Configuration, Error, MCP3424, Mode};
 use crate::cfg::Cfg;
 use crate::mode::oneshot;
+use crate::{Configuration, Error, Mode, MCP3424};
 
 /// A mode which triggers a sequence of one-shot conversions.
 ///
@@ -38,7 +38,7 @@ use crate::mode::oneshot;
 ///         .with_channel(Channel::Channel4)
 /// ]));
 ///
-///# async_std::task::block_on(async {
+///# smol::block_on(async {
 /// match adc.measure().await {
 ///     Ok(value) => {
 ///         println!("Measured value of channel 3: {:?}", value[0]);
@@ -173,15 +173,17 @@ mod tests {
     use embedded_hal_mock::eh1::delay::NoopDelay;
     use embedded_hal_mock::eh1::i2c::{Mock as I2c, Transaction};
     use googletest::prelude::*;
+    use macro_rules_attribute::apply;
     use rstest::{fixture, rstest};
+    use smol_macros::test;
 
     #[cfg(feature = "uom")]
     use uom::si::electric_potential::millivolt;
     #[cfg(feature = "uom")]
     use uom::si::f32::ElectricPotential;
 
-    use crate::{Channel, Configuration, Gain, MCP3424, MultiShotMode, Resolution};
     use crate::cfg::{Cfg, Mode};
+    use crate::{Channel, Configuration, Gain, MultiShotMode, Resolution, MCP3424};
 
     #[fixture]
     fn expected_cfg() -> Cfg {
@@ -195,6 +197,7 @@ mod tests {
     }
 
     #[rstest]
+    #[test_attr(apply(test))]
     async fn When_in_MultiShotMode_a_MCP3424_should_trigger_a_multiple_conversions(expected_cfg: Cfg) -> Result<()> {
 
         let expected_cfg_1 = Cfg {
@@ -243,6 +246,7 @@ mod tests {
     }
 
     #[rstest]
+    #[test_attr(apply(test))]
     async fn When_in_MultiShotMode_a_MCP3424_should_return_an_error_if_there_is_no_data_available(expected_cfg: Cfg) -> Result<()> {
 
         let returned_cfg_1 = Cfg {

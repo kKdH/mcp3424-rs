@@ -1,6 +1,6 @@
-use crate::{cfg, Configuration, Error, MCP3424, Mode};
 use crate::cfg::Cfg;
 use crate::mode::oneshot;
+use crate::{cfg, Configuration, Error, Mode, MCP3424};
 
 /// A mode where the device executes a single conversion.
 ///
@@ -23,7 +23,7 @@ use crate::mode::oneshot;
 ///#
 /// let mut adc = MCP3424::new(i2c, 0x68, Delay, OneShotMode::new(&Configuration::default()));
 ///
-///# async_std::task::block_on(async {
+///# smol::block_on(async {
 /// match adc.measure().await {
 ///     Ok(value) => println!("Measured value: {:?}", value),
 ///     Err(_) => println!("Failed to measure")
@@ -145,14 +145,17 @@ mod tests {
     use embedded_hal_mock::eh1::delay::NoopDelay;
     use embedded_hal_mock::eh1::i2c::{Mock as I2c, Transaction};
     use googletest::prelude::*;
+    use macro_rules_attribute::apply;
     use rstest::{fixture, rstest};
+    use smol_macros::test;
+
     #[cfg(feature = "uom")]
     use uom::si::electric_potential::millivolt;
     #[cfg(feature = "uom")]
     use uom::si::f32::ElectricPotential;
 
-    use crate::{Channel, Configuration, Gain, MCP3424, OneShotMode, Resolution};
     use crate::cfg::{Cfg, Mode};
+    use crate::{Channel, Configuration, Gain, OneShotMode, Resolution, MCP3424};
 
     #[fixture]
     fn expected_cfg() -> Cfg {
@@ -166,6 +169,7 @@ mod tests {
     }
 
     #[rstest]
+    #[test_attr(apply(test))]
     async fn When_in_OneShotMode_a_MCP3424_should_trigger_a_single_conversion(expected_cfg: Cfg) -> Result<()> {
 
         let returned_cfg = Cfg {
@@ -192,6 +196,7 @@ mod tests {
     }
 
     #[rstest]
+    #[test_attr(apply(test))]
     async fn When_in_OneShotMode_a_MCP3424_should_return_an_error_if_there_is_no_data_available(expected_cfg: Cfg) -> Result<()> {
 
         let returned_cfg = Cfg {

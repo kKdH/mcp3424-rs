@@ -141,7 +141,7 @@ mod tests {
         #[case] value: i32,
     ) -> Result<()> {
 
-        assert_that!(Testee::convert(&code), err(matches_pattern!(crate::Error::IllegalValue { value: eq(&value) })));
+        assert_that!(Testee::convert(&code), err(matches_pattern!(crate::Error::IllegalValue { value: eq(&value), .. })));
 
         Ok(())
     }

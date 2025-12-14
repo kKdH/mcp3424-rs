@@ -9,6 +9,7 @@ use embassy_executor::Spawner;
 use embassy_stm32::{bind_interrupts, Config, i2c};
 use embassy_stm32::i2c::{Error, I2c};
 use embassy_stm32::mode::Async;
+use embassy_stm32::i2c::mode::Master;
 use embassy_stm32::peripherals;
 use embassy_stm32::time::Hertz;
 use embassy_time::{Delay, Timer};
@@ -30,7 +31,7 @@ use panic_probe as _;
 #[global_allocator]
 pub static HEAP: embedded_alloc::LlffHeap = embedded_alloc::LlffHeap::empty();
 
-type Adc = MCP3424<I2c<'static, Async>, Error, Delay, MultiShotMode<4>>;
+type Adc = MCP3424<I2c<'static, Async, Master>, Error, Delay, MultiShotMode<4>>;
 
 bind_interrupts!(struct Irqs {
     I2C1_EV => i2c::EventInterruptHandler<peripherals::I2C1>;
@@ -59,6 +60,7 @@ async fn main(spawner: Spawner) {
         let mut config = i2c::Config::default();
         config.scl_pullup = true;
         config.sda_pullup = true;
+        config.frequency = Hertz(400_000);
         I2c::new(
             peripherals.I2C1,
             peripherals.PA15,
@@ -66,7 +68,6 @@ async fn main(spawner: Spawner) {
             Irqs,
             peripherals.DMA1_CH6,
             peripherals.DMA1_CH1,
-            Hertz(400_000),
             config,
         )
     };
@@ -95,7 +96,7 @@ async fn main(spawner: Spawner) {
 
     info!("Configuration completed.");
 
-    unwrap!(spawner.spawn(measure(adc)));
+    spawner.spawn(unwrap!(measure(adc)));
 
     info!("Going into main loop.");
 
@@ -104,7 +105,7 @@ async fn main(spawner: Spawner) {
     }
 }
 
-#[embassy_executor::task()]
+#[embassy_executor::task]
 async fn measure(mut adc: Adc) {
 
     info!("Starting measuring task.");
@@ -124,6 +125,7 @@ async fn measure(mut adc: Adc) {
                 Ok(values) => info!("Measured values: {=str}", values),
                 Err(error) => error!("Failed to measure, due to error {}", error),
             }
+            Timer::after_millis(1000).await;
         }
     }
 }
